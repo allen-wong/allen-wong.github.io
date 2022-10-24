@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.13.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="2020年7月初远程帮表哥家看娃的作业打不出来。升级office发现他家带宽只有90M+，逐问之，答曰电信师傅说光猫路由全要换，光猫要价300大洋。于是就有了后来的闲鱼淘来半新F412在家按下文步骤测试好再去他家换猫的经历。一路非常顺利，好文怕丢，转载之，侵删。感谢原作者的分享。原图不喜欢，再加上折腾一次两三个小时，下次有机会再补图吧。 概述 有经验的小伙伴看概述就行了   拔光纤 http:">
+<meta property="og:type" content="article">
+<meta property="og:title" content="中兴F412 V6.0优化配置指南">
+<meta property="og:url" content="http://example.com/2020/08/05/optical-modem-f412/index.html">
+<meta property="og:site_name" content="小确幸">
+<meta property="og:description" content="2020年7月初远程帮表哥家看娃的作业打不出来。升级office发现他家带宽只有90M+，逐问之，答曰电信师傅说光猫路由全要换，光猫要价300大洋。于是就有了后来的闲鱼淘来半新F412在家按下文步骤测试好再去他家换猫的经历。一路非常顺利，好文怕丢，转载之，侵删。感谢原作者的分享。原图不喜欢，再加上折腾一次两三个小时，下次有机会再补图吧。 概述 有经验的小伙伴看概述就行了   拔光纤 http:">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2020/08/05/optical-modem-f412/582a698cc63e51287.png_fo742.png">
+<meta property="og:image" content="http://example.com/2020/08/05/optical-modem-f412/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20200807224623.png">
+<meta property="og:image" content="http://example.com/2020/08/05/optical-modem-f412/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87%E7%BC%96%E8%BE%91_20200807225316.jpg">
+<meta property="og:image" content="http://example.com/2020/08/05/optical-modem-f412/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20200807230822.png">
+<meta property="og:image" content="http://example.com/2020/08/05/optical-modem-f412/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20200807230941.png">
+<meta property="og:image" content="http://example.com/2020/08/05/optical-modem-f412/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20200807231156.png">
+<meta property="og:image" content="http://example.com/2020/08/05/optical-modem-f412/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20200807231421.png">
+<meta property="article:published_time" content="2020-08-05T14:54:25.000Z">
+<meta property="article:modified_time" content="2020-08-15T11:54:20.000Z">
+<meta property="article:author" content="Allen Wong">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2020/08/05/optical-modem-f412/582a698cc63e51287.png_fo742.png">
+
+
+<link rel="canonical" href="http://example.com/2020/08/05/optical-modem-f412/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2020/08/05/optical-modem-f412/","path":"2020/08/05/optical-modem-f412/","title":"中兴F412 V6.0优化配置指南"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>中兴F412 V6.0优化配置指南 | 小确幸</title>
+  
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">小确幸</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">早睡早起是为了保命</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%A6%E7%BB%86%E6%AD%A5%E9%AA%A4"><span class="nav-number">2.</span> <span class="nav-text">详细步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%B0%E4%B8%8B%E5%85%89%E7%8C%AB%E7%9A%84%E5%90%84%E7%B1%BB%E5%8F%82%E6%95%B0"><span class="nav-number">2.1.</span> <span class="nav-text">记下光猫的各类参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%89%E7%8C%AB%E5%A4%8D%E4%BD%8D"><span class="nav-number">2.2.</span> <span class="nav-text">光猫复位</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BE%97%E5%88%B0%E8%B6%85%E7%BA%A7%E7%94%A8%E8%AE%B0%E5%AF%86%E7%A0%81"><span class="nav-number">2.3.</span> <span class="nav-text">得到超级用记密码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9%E8%B7%AF%E7%94%B1%E6%A8%A1%E5%BC%8F%E4%B8%BA%E6%A1%A5%E6%8E%A5%E6%A8%A1%E5%BC%8F"><span class="nav-number">2.4.</span> <span class="nav-text">修改路由模式为桥接模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%94%B6%E5%B0%BE"><span class="nav-number">2.5.</span> <span class="nav-text">收尾</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%90%9E%E9%94%99%E4%BA%86%E6%80%8E%E4%B9%88%E8%BF%98%E5%8E%9F"><span class="nav-number">2.6.</span> <span class="nav-text">搞错了怎么还原</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%A0%E9%99%A4%E7%94%B5%E4%BF%A1%E8%BF%9C%E7%A8%8B%E6%8E%A7%E5%88%B6"><span class="nav-number">2.7.</span> <span class="nav-text">删除电信远程控制</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%A6%E4%B8%80%E7%A7%8D%E6%9B%B4%E7%AE%80%E5%8D%95%E7%9A%84%E5%88%87%E6%8D%A2%E6%A1%A5%E6%8E%A5%E6%96%B9%E6%B3%95"><span class="nav-number">3.</span> <span class="nav-text">另一种更简单的切换桥接方法</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Allen Wong"
+      src="https://img.wowoqq.com/allimg/160329/1-16032Z30329.jpg">
+  <p class="site-author-name" itemprop="name">Allen Wong</p>
+  <div class="site-description" itemprop="description">喜欢野炊露营还有健身的IT狗一只</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/08/05/optical-modem-f412/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://img.wowoqq.com/allimg/160329/1-16032Z30329.jpg">
+      <meta itemprop="name" content="Allen Wong">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小确幸">
+      <meta itemprop="description" content="喜欢野炊露营还有健身的IT狗一只">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="中兴F412 V6.0优化配置指南 | 小确幸">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          中兴F412 V6.0优化配置指南
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-08-05 22:54:25" itemprop="dateCreated datePublished" datetime="2020-08-05T22:54:25+08:00">2020-08-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2020-08-15 19:54:20" itemprop="dateModified" datetime="2020-08-15T19:54:20+08:00">2020-08-15</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%85%89%E7%8C%AB%E9%85%8D%E7%BD%AE/" itemprop="url" rel="index"><span itemprop="name">光猫配置</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <img src="/2020/08/05/optical-modem-f412/582a698cc63e51287.png_fo742.png" class="" title="中兴F412光猫">
+
+<p>2020年7月初远程帮表哥家看娃的作业打不出来。升级office发现他家带宽只有90M+，逐问之，答曰电信师傅说光猫路由全要换，光猫要价300大洋。于是就有了后来的闲鱼淘来半新F412在家按下文步骤测试好再去他家换猫的经历。一路非常顺利，好文怕丢，转载之，侵删。感谢原作者的分享。原图不喜欢，再加上折腾一次两三个小时，下次有机会再补图吧。</p>
+<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><blockquote>
+<p>有经验的小伙伴看概述就行了</p>
+</blockquote>
+<ol>
+<li>拔光纤</li>
+<li><code>http://192.168.1.1/hidden_version_switch.gch</code>，选默认再选湖北（其它的自己选对应位置，如果提示密码错误，则输入<code>telnet</code>拿到的<code>telecomadmin</code>的密码）</li>
+<li>插光纤，注册LOID<br>配置丢失用1，2，3，否则直接4，5，注意拔光纤</li>
+<li>拔光纤，复位</li>
+<li><code>telnet 192.168.1.1</code> 用户名<code>root</code>，密码<code>Zte521</code></li>
+<li><code>sendcmd 1 DB p DevAuthInfo</code></li>
+<li>观察密码</li>
+<li>得到密码了老鸟们还需要我说么？自己进去改参数</li>
+<li>自己权衡是否需要删除<code>TR069</code></li>
+</ol>
+<span id="more"></span>
+
+<h2 id="详细步骤"><a href="#详细步骤" class="headerlink" title="详细步骤"></a>详细步骤</h2><p>网上常见的教程是直接telnet进去运行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sendcmd 1 DB p DevAuthInfo</span><br></pre></td></tr></table></figure>
+<p>观察得到telecomadmin的密码。但实际情况就像这样：</p>
+<img src="/2020/08/05/optical-modem-f412/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20200807224623.png" class="" title="光猫背面标签">
+
+<p>那些教程都是2012，2013年的了。后面的电信都关了telnet功能，你根本连不进去。当然，如果你连接成功，就试一下用户名：<code>root</code>，密码：<code>Zte521</code>，登录后试一下上面的命令，仔细观察结果可得到telecomadmin的密码。如果是和上面图中所示一样连接失败那就继续往下看。</p>
+<h3 id="记下光猫的各类参数"><a href="#记下光猫的各类参数" class="headerlink" title="记下光猫的各类参数"></a>记下光猫的各类参数</h3><ol>
+<li>观察光猫背面标签，记往<code>IP</code>、<code>帐号</code>、<code>密码</code>，然后用这个帐号密码登陆进去，可以看到，是6.0版本。    <img src="/2020/08/05/optical-modem-f412/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87%E7%BC%96%E8%BE%91_20200807225316.jpg" class="" title="光猫背面标签">
+<img src="/2020/08/05/optical-modem-f412/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20200807230822.png" class="" title="登录界面">
+<img src="/2020/08/05/optical-modem-f412/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20200807230941.png" class="" title="光猫后台首页"></li>
+<li>进<code>网络 -&gt; 远程管理</code>，记住<code>LOID</code>。<strong>这个非常重要，一定要记清楚</strong>    <img src="/2020/08/05/optical-modem-f412/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20200807231156.png" class="" title="LOID"></li>
+<li>进<code>状态 -&gt; 网络侧信息 -&gt; IPV4连接信息</code>，记下<code>VLAN</code>，一般来说就是连接名称后面的数字。例如图中的是INTERNET是1139，TR069的是46，IPTV是3141。<strong>这个非常重要，错了就上不了网</strong>    <img src="/2020/08/05/optical-modem-f412/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20200807231421.png" class="" title="LOID"></li>
+</ol>
+<h3 id="光猫复位"><a href="#光猫复位" class="headerlink" title="光猫复位"></a>光猫复位</h3><p>现在<strong>拔掉光纤，拔掉光纤，拔掉光纤</strong>，重要的事说三遍！！！</p>
+<blockquote>
+<p>注意：光纤拔掉后，头子不要乱放，上面如果沾了灰，会影响网速。</p>
+</blockquote>
+<p>找个牙签之类的东西，按住光猫复位键10秒。这时光猫会自动重启，等待光猫重启完成</p>
+<blockquote>
+<p>注意：光猫复位键几年前就已经被电信阉割了，不可能真正复位光猫。这里复位后无需重新注册LOID。直接按下面教程就OK了。</p>
+</blockquote>
+<h3 id="得到超级用记密码"><a href="#得到超级用记密码" class="headerlink" title="得到超级用记密码"></a>得到超级用记密码</h3><blockquote>
+<p>如果你的CMD里没有telnet,请百度，可以通过打开&#x2F;关闭windows功能解决；</p>
+</blockquote>
+<p>运行CMD</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 用户名:root，密码:Zte521 (你问撸主怎么知道的用户名密码，撸主告诉你：百度的)</span></span><br><span class="line">telnet 192.168.1.1</span><br><span class="line"></span><br><span class="line"><span class="comment"># 登陆后输入：</span></span><br><span class="line">sendcmd 1 DB p DevAuthInfo</span><br><span class="line"></span><br><span class="line"><span class="comment"># 如果无效输入：</span></span><br><span class="line">sendcmd 1 DB p UserInfo</span><br></pre></td></tr></table></figure>
+
+<p>输入后出出来一堆信息，找到红圈的位置，记下用户名密码。这里假设是：<code>telecomadmin</code>、<code>123456</code></p>
+<h3 id="修改路由模式为桥接模式"><a href="#修改路由模式为桥接模式" class="headerlink" title="修改路由模式为桥接模式"></a>修改路由模式为桥接模式</h3><p>重新用telecomadmin用户登陆进光猫，进去后，你会发现，比刚才的菜单都变多了，这个时候，光猫的功能才全部都出来了</p>
+<p>进<code>网络-&gt;宽带设置-&gt;internet连接</code>，选择一个你自己的连接，例如这里是那个_1351结尾那个</p>
+<p>观察刚才的记录值是否正确，如果你不知道自己拨号信息，可以在这里直接看到（找一个页面密码查看工具看）。有时候电信会**的不告诉你拨号密码。</p>
+<blockquote>
+<p>看到那个允许最大用户数没？ 4个！！！ 删除这个连接。</p>
+</blockquote>
+<p>选择<code>新建wan连接</code>（注意，刚才删除后，这里应该下拉只有2项：<code>新建</code>和<code>TR069</code>那个）</p>
+<p>修改以下参数，并保存：</p>
+<ul>
+<li>模式：桥模式</li>
+<li>VLAN：改写(tag)</li>
+<li>VLANID：1351</li>
+<li>802.1p：0</li>
+</ul>
+<p>好了，至此，你的光猫已经修改成功了。从现在开始，你必须拨号才能上网！</p>
+<h3 id="收尾"><a href="#收尾" class="headerlink" title="收尾"></a>收尾</h3><p><strong>插上光纤，插上光纤，插上光纤</strong>，设置路由拨号，测试上网及全国版IPTV。</p>
+<h3 id="搞错了怎么还原"><a href="#搞错了怎么还原" class="headerlink" title="搞错了怎么还原"></a>搞错了怎么还原</h3><p>如果你在配置过程中，把VLAN记错了，或者忘了某一步骤，或者IPTV整到不能用了，怎么还原呢。复位光猫是没用滴。。。。那基本就是个假复位。重新注册也注册不上。恢复方法如下：</p>
+<ol>
+<li><strong>拔掉光纤，拔掉光纤，拔掉光纤</strong></li>
+<li>进这个地址：<code>http://192.168.1.1/hidden_version_switch.gch</code></li>
+<li>选<code>default version</code></li>
+<li>点<code>submit</code>(如果提示密码错误，则输入前面拿到的<code>telecomadmin</code>的密码)</li>
+<li>光猫自动重启</li>
+<li>重启完成后，再进：<code>http://192.168.1.1/hidden_version_switch.gch</code></li>
+<li>选相应的地区，例如撸主选的hubei version</li>
+<li>点submit</li>
+<li>光猫自动重启</li>
+<li>插光纤</li>
+<li>进<code>http://192.168.1.1</code>，点设备注册，输入<code>LOID</code>，等待注册成功就恢复了。</li>
+</ol>
+<blockquote>
+<p>注意，每注册一次LOID，telecomadmin的密码都会变，之前破解的就没用了。</p>
+</blockquote>
+<p>恢复后打开IPTV，直到能进去看电视，打开会才会自动下发配置，不要着急，多等会就能看了。一切就绪后再重新开始上面的步骤！</p>
+<h3 id="删除电信远程控制"><a href="#删除电信远程控制" class="headerlink" title="删除电信远程控制"></a>删除电信远程控制</h3><ol>
+<li>用telecomadmin用户登陆光猫</li>
+<li>在刚才建桥接的那个页面选TR069</li>
+<li>点修改，修改VLAN ID，或者直接删除。你们发现<code>修改</code>、<code>删除</code>都不让点，都是灰滴。</li>
+<li>chrome、360浏览器极速版或360浏览器极速模式，右键<code>元素审查</code>或<code>检查</code>，移动鼠标，页面上会有一个阴影。当你发现阴影覆盖了这个按纽里，停住！！！把横着的三角一层层，点成朝下滴三角。直到阴影指向你需要的位置，看到<code>修改</code>、<code>删除</code>都在这。</li>
+<li>双击按最后那个<code>disabled</code>并删除掉。现在<code>修改</code>按纽能点了（即使是灰的也能点），事实上点了修改也没用，直接改删除吧</li>
+</ol>
+<p>原文出处：<a target="_blank" rel="noopener" href="https://post.smzdm.com/p/507606/">帮你省50块 — 中兴 F412 V6.0 + 星网锐捷 hg-gp800-s 光猫 破解教程</a>。</p>
+<hr>
+<h2 id="另一种更简单的切换桥接方法"><a href="#另一种更简单的切换桥接方法" class="headerlink" title="另一种更简单的切换桥接方法"></a>另一种更简单的切换桥接方法</h2><p>网址输入<code>192.168.1.1/bridge_route.gch</code>，填上宽带账号和密码搞定！</p>
+<p>原文出处：<a target="_blank" rel="noopener" href="https://koolshare.cn/thread-108448-1-1.html">中兴f412 6.0版能改成桥接模式吗？</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/08/05/optical-modem-g-140w-ug/" rel="next" title="吉比特G-140W-UG优化配置指南">
+                  吉比特G-140W-UG优化配置指南 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Allen Wong</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.0/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

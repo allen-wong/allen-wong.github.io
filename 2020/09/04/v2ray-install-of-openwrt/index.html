@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.13.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="项目地址：  openwrt-v2ray luci-app-v2ray  以下摘自项目的README">
+<meta property="og:type" content="article">
+<meta property="og:title" content="在Openwrt安装V2ray">
+<meta property="og:url" content="http://example.com/2020/09/04/v2ray-install-of-openwrt/index.html">
+<meta property="og:site_name" content="小确幸">
+<meta property="og:description" content="项目地址：  openwrt-v2ray luci-app-v2ray  以下摘自项目的README">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-09-04T14:15:37.000Z">
+<meta property="article:modified_time" content="2022-07-03T15:57:36.000Z">
+<meta property="article:author" content="Allen Wong">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2020/09/04/v2ray-install-of-openwrt/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2020/09/04/v2ray-install-of-openwrt/","path":"2020/09/04/v2ray-install-of-openwrt/","title":"在Openwrt安装V2ray"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>在Openwrt安装V2ray | 小确幸</title>
+  
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">小确幸</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">早睡早起是为了保命</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Add-new-opkg-key"><span class="nav-number">1.</span> <span class="nav-text">Add new opkg key:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Add-opkg-repository"><span class="nav-number">2.</span> <span class="nav-text">Add opkg repository:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Install-package"><span class="nav-number">3.</span> <span class="nav-text">Install package:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Upgrade-package"><span class="nav-number">4.</span> <span class="nav-text">Upgrade package:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Uninstall-package"><span class="nav-number">5.</span> <span class="nav-text">Uninstall package:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%BA%E9%94%99"><span class="nav-number">6.</span> <span class="nav-text">出错</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE"><span class="nav-number">7.</span> <span class="nav-text">配置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%A5%E7%AB%99%E8%BF%9E%E6%8E%A5"><span class="nav-number">7.1.</span> <span class="nav-text">入站连接</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%87%BA%E7%AB%99%E8%BF%9E%E6%8E%A5"><span class="nav-number">7.2.</span> <span class="nav-text">出站连接</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%80%8F%E6%98%8E%E4%BB%A3%E7%90%86"><span class="nav-number">7.3.</span> <span class="nav-text">透明代理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%A8%E5%B1%80%E8%AE%BE%E7%BD%AE"><span class="nav-number">7.4.</span> <span class="nav-text">全局设置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%89%93%E5%BC%80%E9%98%B2%E7%81%AB%E5%A2%99%E7%AB%AF%E5%8F%A3"><span class="nav-number">7.5.</span> <span class="nav-text">打开防火墙端口</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Allen Wong"
+      src="https://img.wowoqq.com/allimg/160329/1-16032Z30329.jpg">
+  <p class="site-author-name" itemprop="name">Allen Wong</p>
+  <div class="site-description" itemprop="description">喜欢野炊露营还有健身的IT狗一只</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/09/04/v2ray-install-of-openwrt/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://img.wowoqq.com/allimg/160329/1-16032Z30329.jpg">
+      <meta itemprop="name" content="Allen Wong">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小确幸">
+      <meta itemprop="description" content="喜欢野炊露营还有健身的IT狗一只">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="在Openwrt安装V2ray | 小确幸">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          在Openwrt安装V2ray
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-09-04 22:15:37" itemprop="dateCreated datePublished" datetime="2020-09-04T22:15:37+08:00">2020-09-04</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-07-03 23:57:36" itemprop="dateModified" datetime="2022-07-03T23:57:36+08:00">2022-07-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E8%BD%AF%E8%B7%AF%E7%94%B1/" itemprop="url" rel="index"><span itemprop="name">软路由</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>项目地址：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/kuoruan/openwrt-v2ray">openwrt-v2ray</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/kuoruan/luci-app-v2ray">luci-app-v2ray</a></li>
+</ul>
+<p>以下摘自项目的README</p>
+<span id="more"></span>
+
+<h3 id="Add-new-opkg-key"><a href="#Add-new-opkg-key" class="headerlink" title="Add new opkg key:"></a>Add new opkg key:</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wget -O kuoruan-public.key http://openwrt.kuoruan.net/packages/public.key</span><br><span class="line">opkg-key add kuoruan-public.key</span><br></pre></td></tr></table></figure>
+
+<h3 id="Add-opkg-repository"><a href="#Add-opkg-repository" class="headerlink" title="Add opkg repository:"></a>Add opkg repository:</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">&quot;src/gz kuoruan_packages http://openwrt.kuoruan.net/packages/releases/<span class="subst">$(. /etc/openwrt_release ; echo $DISTRIB_ARCH)</span>&quot;</span> \</span><br><span class="line">  &gt;&gt; /etc/opkg/customfeeds.conf</span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;src/gz kuoruan_universal http://openwrt.kuoruan.net/packages/releases/all&quot;</span> \</span><br><span class="line">  &gt;&gt; /etc/opkg/customfeeds.conf</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>Replace <code>http://</code> with <code>https://</code> if you like.</p>
+</blockquote>
+<h3 id="Install-package"><a href="#Install-package" class="headerlink" title="Install package:"></a>Install package:</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">opkg update</span><br><span class="line">opkg install v2ray-core</span><br><span class="line">opkg install luci-app-v2ray</span><br><span class="line">opkg install luci-i18n-v2ray-zh-cn</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>You may need to remove before installing this package.dnsmasq</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rm -f /etc/config/dhcp</span><br><span class="line">opkg remove dnsmasq &amp;&amp; opkg install dnsmasq-full</span><br></pre></td></tr></table></figure>
+
+<h3 id="Upgrade-package"><a href="#Upgrade-package" class="headerlink" title="Upgrade package:"></a>Upgrade package:</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">opkg update</span><br><span class="line">opkg upgrade v2ray-core</span><br><span class="line">opkg upgrade luci-app-v2ray</span><br><span class="line">opkg upgrade luci-i18n-v2ray-zh-cn</span><br></pre></td></tr></table></figure>
+
+<h3 id="Uninstall-package"><a href="#Uninstall-package" class="headerlink" title="Uninstall package:"></a>Uninstall package:</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">opkg remove v2ray-core</span><br></pre></td></tr></table></figure>
+
+<h3 id="出错"><a href="#出错" class="headerlink" title="出错"></a>出错</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/lib/lua/luci/dispatcher.lua:938: module <span class="string">&#x27;luci.cbi&#x27;</span> not found:</span><br></pre></td></tr></table></figure>
+
+<p>如果出现上面的错误，试一下下面的命令，主要是缺<code>luci-compat</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">opkg install luci luci-base luci-compat</span><br></pre></td></tr></table></figure>
+
+<p>更多请查看issues：<a target="_blank" rel="noopener" href="https://github.com/kuoruan/luci-app-v2ray/issues/42">更新openwrt luci后 应用设置界面错误</a></p>
+<h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><p>本章节内容来自互联网</p>
+<h4 id="入站连接"><a href="#入站连接" class="headerlink" title="入站连接"></a>入站连接</h4><p>在<code>dokodemo_door</code>这一行后面点击<code>编辑</code>按钮，参数配置变更如下：</p>
+<ul>
+<li>监听地址: 选<code>0.0.0.0</code></li>
+<li>Dokodemo-door - 网络: 勾上<code>tcp</code>和<code>udp</code></li>
+</ul>
+<h4 id="出站连接"><a href="#出站连接" class="headerlink" title="出站连接"></a>出站连接</h4><p>在<code>vmess</code>这一行后面点击<code>编辑</code>按钮，参数配置变更如下：</p>
+<ul>
+<li>发送IP地址：选<code>路由器内网IP</code>，例如192.168.1.1</li>
+<li>VMess - 地址：等同于电脑端<code>v2rayN</code>的VMess服务器配置界面（下同）的<code>地址(address)</code></li>
+<li>VMess - 端口：<code>端口(port)</code></li>
+<li>VMess - 用户 ID：<code>用户ID(id)</code></li>
+<li>VMess - Alter ID：<code>额外ID(alterId)</code></li>
+<li>底层传输配置 - 网络：<code>传输协议(newtork)</code>，v2rayN的<code>ws</code>对应本选项的<code>WebSocket</code></li>
+<li>底层传输配置 - 传输层加密：<code>底层传输安全</code>，都是选<code>TLS</code></li>
+<li>TLS - 服务器端证书域名：我填的和<code>VMess - 地址</code>相同</li>
+<li>WebSocket - 路径：<code>路径(path)</code></li>
+<li>连接选项 - TCP 快速打开：根据服务端实际情况勾选</li>
+<li>多路复用 - 已启用：根据服务端实际情况勾选</li>
+</ul>
+<h4 id="透明代理"><a href="#透明代理" class="headerlink" title="透明代理"></a>透明代理</h4><ul>
+<li>转发端口：选<code>入站连接</code>的配置，由连接名称和连接端口组成</li>
+<li>桥接：”br-lan”：勾上</li>
+<li>代理模式：正常情况下应该选<code>代理GFWList</code>，但不知为何<code>GFWList</code>后面的<code>更新</code>按钮点击始终提示<code>列表列新失败，请稍候重试</code>。于是我选了<code>直连CN</code></li>
+</ul>
+<p>后面两个镜像就不用多说了，尽可能保持最新。</p>
+<h4 id="全局设置"><a href="#全局设置" class="headerlink" title="全局设置"></a>全局设置</h4><ul>
+<li>已启用：勾上</li>
+<li>重载服务：点击并且稍等片刻</li>
+</ul>
+<p>至此，我的电脑已经可以打开谷歌了。</p>
+<h4 id="打开防火墙端口"><a href="#打开防火墙端口" class="headerlink" title="打开防火墙端口"></a>打开防火墙端口</h4><p>依次点击<code>OpenWRT</code>菜单的网络-&gt;防火墙-&gt;通信规则-&gt;添加-&gt;常规设置</p>
+<ul>
+<li>名称：<code>Allow-V2Ray</code></li>
+<li>协议：<code>TCP+UDP</code></li>
+<li>目标区域：<code>设备(输入)</code></li>
+</ul>
+<p>点击<code>保存</code>按钮，结束。</p>
+<p>看到有这一步，但是目前不清楚用来干啥的。先记下来。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/08/19/kvm-install-winxp/" rel="prev" title="Centos 8 KVM下安装MSDN原版Windows XP">
+                  <i class="fa fa-chevron-left"></i> Centos 8 KVM下安装MSDN原版Windows XP
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/09/04/openwrt-install/" rel="next" title="安装Openwrt">
+                  安装Openwrt <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Allen Wong</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.0/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
